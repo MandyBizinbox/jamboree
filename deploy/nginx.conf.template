@@ -1,0 +1,23 @@
+# Replace DOMAIN_PLACEHOLDER with the real staging host. Enable TLS via Certbot.
+limit_req_zone $binary_remote_addr zone=wsj_public_api:10m rate=60r/m;
+server {
+    listen 80;
+    server_name DOMAIN_PLACEHOLDER;
+    client_max_body_size 1m;
+    location /api/ {
+        limit_req zone=wsj_public_api burst=25 nodelay;
+        proxy_pass http://127.0.0.1:3017;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 60s;
+    }
+    location / {
+        proxy_pass http://127.0.0.1:3017;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

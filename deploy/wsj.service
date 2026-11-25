@@ -1,0 +1,20 @@
+[Unit]
+Description=WSJ SA Registration Portal
+After=network.target
+
+[Service]
+User=madness
+Group=madness
+WorkingDirectory=/home/madness/wsj-registration
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/wsj-registration.env
+ExecStart=/usr/bin/node /home/madness/wsj-registration/server.mjs
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
+LimitNOFILE=8192
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,110 @@
+
+> wsj-sa-registration-selfhosted@1.0.0-rc1 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: named CMT login, protected export, configuration and preserved workbook
+ok 1 - named CMT login, protected export, configuration and preserved workbook
+  ---
+  duration_ms: 143.022503
+  type: 'test'
+  ...
+# Subtest: public draft lifecycle and private CMT access
+ok 2 - public draft lifecycle and private CMT access
+  ---
+  duration_ms: 61.300465
+  type: 'test'
+  ...
+# Subtest: full adult synthetic route can satisfy required schema with safe conditional No answers
+ok 3 - full adult synthetic route can satisfy required schema with safe conditional No answers
+  ---
+  duration_ms: 8.883459
+  type: 'test'
+  ...
+# Subtest: skipped allergy followups are unrequired and defaults map to No
+ok 4 - skipped allergy followups are unrequired and defaults map to No
+  ---
+  duration_ms: 3.96068
+  type: 'test'
+  ...
+# Subtest: guardian address can reuse participant without requesting every field twice
+ok 5 - guardian address can reuse participant without requesting every field twice
+  ---
+  duration_ms: 3.736037
+  type: 'test'
+  ...
+# Subtest: complete public registration, locking and template-based private preview
+ok 6 - complete public registration, locking and template-based private preview
+  ---
+  duration_ms: 839.655776
+  type: 'test'
+  ...
+# Subtest: 197 unique export columns
+ok 7 - 197 unique export columns
+  ---
+  duration_ms: 0.92922
+  type: 'test'
+  ...
+# Subtest: guardian Other is conditional
+ok 8 - guardian Other is conditional
+  ---
+  duration_ms: 0.885565
+  type: 'test'
+  ...
+# Subtest: allergy details hidden if screening No
+ok 9 - allergy details hidden if screening No
+  ---
+  duration_ms: 0.601123
+  type: 'test'
+  ...
+# Subtest: allergy severity only visible if selected
+ok 10 - allergy severity only visible if selected
+  ---
+  duration_ms: 0.292174
+  type: 'test'
+  ...
+# Subtest: mobility wheelchair type conditional
+ok 11 - mobility wheelchair type conditional
+  ---
+  duration_ms: 0.179076
+  type: 'test'
+  ...
+# Subtest: no unneeded guardian for adult
+ok 12 - no unneeded guardian for adult
+  ---
+  duration_ms: 0.16159
+  type: 'test'
+  ...
+# Subtest: public sections exclude carer and travel admin
+ok 13 - public sections exclude carer and travel admin
+  ---
+  duration_ms: 0.245705
+  type: 'test'
+  ...
+# Subtest: SA to Poland: July daylight saving preserves 24h wall clock
+ok 14 - SA to Poland: July daylight saving preserves 24h wall clock
+  ---
+  duration_ms: 18.323133
+  type: 'test'
+  ...
+# Subtest: SA to Poland: January winter shifts one hour earlier
+ok 15 - SA to Poland: January winter shifts one hour earlier
+  ---
+  duration_ms: 0.347126
+  type: 'test'
+  ...
+# Subtest: SA to Poland: winter calendar day may change
+ok 16 - SA to Poland: winter calendar day may change
+  ---
+  duration_ms: 0.21583
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1286.058736
