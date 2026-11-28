@@ -66,7 +66,7 @@ function field(q,compact=false){const c=q.column;if(!isVisible(c))return '';let 
 function countryList(){return schema.countries||[];}
 function radio(key,question){return `<fieldset class="screen"><legend>${esc(question)} <span class="req">Required</span></legend><div class="twochoice">${yesNo.map(v=>`<label><input data-col="${key}" type="radio" name="${key}" value="${v}" ${values[key]===v?'checked':''}> ${v}</label>`).join('')}</div></fieldset>`;}
 function extraText(key,label,required=false){return `<div class="field"><label for="${key}">${esc(label)}${required?' <span class="req">Required</span>':''}</label><textarea id="${key}" data-col="${key}" rows="3">${esc(values[key]||'')}</textarea></div>`;}
-function fieldSet(qs,exclude=[]){return `<div class="fields">${qs.filter(q=>!exclude.includes(q.column)).map(field).join('')}</div>`;}
+function fieldSet(qs,exclude=[]){return `<div class="fields">${qs.filter(q=>!exclude.includes(q.column)).map(q=>field(q,false)).join('')}</div>`;}
 function renderInputs(section){const sectionNo=section.section.slice(0,2), qs=section.questions;
  if(sectionNo==='05'){
   let html=fieldSet(qs,['AG','AH','AI','AJ',...otherLanguages.flatMap(([name,cols])=>cols.split(' '))]);
