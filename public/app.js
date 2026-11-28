@@ -1,7 +1,7 @@
 const $=(x)=>document.querySelector(x),app=$('#app'),notice=$('#notice');
 let schema,reference='',resumeCode='',values={},step=0, busy=false;
-const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
-const labels={F:'First Name',G:'Surname',H:'Surname at Birth / Previous Surname',I:'Preferred Name',J:"Mother's First Name",K:"Father's First Name",L:"Mother's Birth Surname",M:'Date of Birth',N:'City or Town of Birth',O:'Country of Birth',P:'Gender',Q:'Religion',R:'Nationality',S:'Identification Number',T:'Street Address',U:'Address Line 2',V:'City / Town',W:'Province',X:'Postal Code',Y:'Country of Residence',Z:'Email Address',AA:'Mobile Phone Number',AF:'Native Language',BD:'Which World Scout Jamboree(s) have you attended?',BW:'Travel Document Type',BY:'Passport / Travel Document Number',CF:'Country of Birth',CT:'Country',GM:'Do loud noises, bright lights or crowds cause you difficulty?',FT:'Do religious or personal beliefs affect your healthcare decisions?'};
+const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const labels={F:'First Name',G:'Surname',H:'Surname at Birth / Previous Surname',I:'Preferred Name',J:"Mother's First Name",K:"Father's First Name",L:"Mother's Birth Surname (Maiden Name)",M:'Date of Birth',N:'City or Town of Birth',O:'Country of Birth',P:'Gender',Q:'Religion',R:'Nationality',S:'Identification Number',T:'Street Address',U:'Address Line 2',V:'City / Town',W:'Province',X:'Postal Code',Y:'Country of Residence',Z:'Email Address',AA:'Mobile Phone Number',AF:'Native Language',BD:'Which World Scout Jamboree(s) have you attended?',BW:'Travel Document Type',BY:'Passport / Travel Document Number',CF:'Country of Birth',CT:'Country',GM:'Do loud noises, bright lights or crowds cause you difficulty?',FT:'Do religious or personal beliefs affect your healthcare decisions?'};
 const guardian=['BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV'];
 const emergency=['DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ','EA','EB'];
 const guardianNames=['First Name','Surname','Relationship','Other Relationship','Nationality','Email Address','Phone Number','Preferred Language','Street Address','Address Line 2','City / Town','Province','Postal Code','Country'];
@@ -66,6 +66,7 @@ function field(q,compact=false){const c=q.column;if(!isVisible(c))return '';let 
 function countryList(){return schema.countries||[];}
 function radio(key,question){return `<fieldset class="screen"><legend>${esc(question)} <span class="req">Required</span></legend><div class="twochoice">${yesNo.map(v=>`<label><input data-col="${key}" type="radio" name="${key}" value="${v}" ${values[key]===v?'checked':''}> ${v}</label>`).join('')}</div></fieldset>`;}
 function extraText(key,label,required=false){return `<div class="field"><label for="${key}">${esc(label)}${required?' <span class="req">Required</span>':''}</label><textarea id="${key}" data-col="${key}" rows="3">${esc(values[key]||'')}</textarea></div>`;}
+function parentSurnameFields(){return `<div class="fields">${['form_only.mother_current_surname','form_only.father_surname'].map((key,i)=>`<div class="field"><label for="${key}">${i===0?"Mother's Current Surname":"Father's Surname"} <span class="note">(optional)</span></label><input type="text" id="${key}" data-col="${key}" value="${esc(values[key]||'')}" autocomplete="off"></div>`).join('')}</div><p class="note">These additional surname details are kept with the registration for CMT review; they are not mapped to separate columns in Poland's 197-column template.</p>`;}
 function fieldSet(qs,exclude=[]){return `<div class="fields">${qs.filter(q=>!exclude.includes(q.column)).map(q=>field(q,false)).join('')}</div>`;}
 function renderInputs(section){const sectionNo=section.section.slice(0,2), qs=section.questions;
  if(sectionNo==='05'){
@@ -92,6 +93,11 @@ function renderInputs(section){const sectionNo=section.section.slice(0,2), qs=se
  if(sectionNo==='12')return `<div class="help">Start with dietary and allergy screening. Follow-ups appear only for the answers that need them.</div>${fieldSet(qs)}`;
  if(sectionNo==='13')return `${radio('form_only.regular_medication','Do you take medication regularly?')}${fieldSet(qs)}${values.FT==='Yes'?extraText('form_only.healthcare_beliefs_explanation','Explain relevant healthcare decisions',true):''}`;
  if(sectionNo==='14')return `${radio('form_only.mobility_needs_screen','Do you have mobility restrictions or require mobility assistance?')}${radio('form_only.disability_screen','Do you have disability or accessibility needs that may require support?')}${fieldSet(qs)}`;
+ if(sectionNo==='02'){
+  const middle=qs.filter(q=>['F','G','H','I','J','K','L'].includes(q.column));
+  const rest=qs.filter(q=>!['F','G','H','I','J','K','L'].includes(q.column));
+  return fieldSet(middle)+parentSurnameFields()+fieldSet(rest);
+ }
  return fieldSet(qs);
 }
 function attachInputs(){document.querySelectorAll('[data-col]').forEach(el=>{el.addEventListener(['TEXTAREA','INPUT'].includes(el.tagName)&&!['radio','checkbox'].includes(el.type)?'input':'change',()=>{if(el.type==='radio'&&!el.checked)return;const key=el.dataset.col;values[key]=el.type==='checkbox'?el.checked:el.value;if(el.tagName==='SELECT'||el.type==='radio'){
